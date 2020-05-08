@@ -13,7 +13,7 @@ def main(args):
         inputFiles = [SVG(args.inputfile)]
         outputDir = os.path.split(os.path.abspath(args.inputfile))[0] + "/"
     elif args.inputdir:
-        inputFiles = [SVG(x) for x in os.listdir(args.inputdir) if ".svg" in x]
+        inputFiles = [SVG(f"{os.path.abspath(args.inputdir)}/{x}") for x in os.listdir(args.inputdir) if ".svg" in x]
         outputDir = args.inputdir + "/"
 
     # Overwrite output dir if supplied
