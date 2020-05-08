@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<palette>
+    <variant1>
+        <block1 fill="#FF1493" stroke="#8B0000" stroke-opacity="1" stroke-width="10"/>
+        <block2 fill="#FF1493" stroke="#8B0000" stroke-opacity="1" stroke-width="10"/>
+        <block3 fill="#FF0000" stroke="#8B0000"/>
+    </variant1>
+</palette>
