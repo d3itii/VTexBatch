@@ -1,61 +1,49 @@
 #!/usr/bin/python3.7
+import copy
+import argparse
+import os
 from classes import Palette, SVG
-import copy, argparse, os
 
 
 def main(args):
+    """Main"""
 
     # Import palette file
     palette = Palette(args.palette)
 
     # Import files / get possible directory
-    if args.inputfile:
-        inputFiles = [SVG(args.inputfile)]
-        outputDir = os.path.split(os.path.abspath(args.inputfile))[0] + "/"
-    elif args.inputdir:
-        inputFiles = [SVG(f"{os.path.abspath(args.inputdir)}/{x}") for x in os.listdir(args.inputdir) if ".svg" in x]
-        outputDir = args.inputdir + "/"
-
     # Overwrite output dir if supplied
+    if args.inputfile:
+        input_files = [SVG(args.inputfile)]
+        output_dir = f"{os.path.split(os.path.abspath(args.inputfile))[0]}/"
+    elif args.inputdir:
+        input_files = [SVG(f"{os.path.abspath(args.inputdir)}/{x}")
+                       for x in os.listdir(args.inputdir) if ".svg" in x]
+        output_dir = f"{args.inputdir}/"
     if args.output:
-        outputDir = args.output + "/"
+        output_dir = f"{args.output}/"
 
     # Move all file operations to output dir
-    os.chdir(outputDir)
-
-    # Make dir for all files
+    # Make any non-existant subdirs
+    os.chdir(output_dir)
     for variant in palette.variants:
         if not os.path.exists(variant.tag):
             os.mkdir(variant.tag)
 
-    for svg in inputFiles:
-        svgTags = svg.getSVGLabels()
+    for svg in input_files:
+        svg_tags = svg.get_svg_labels()
 
-        for variant in palette.variants: # Iterate between variants
-            
-            # Get palette elements for variant
-            paletteElements = palette.getVariantElementList(variant)
-            # Common elements between SVG and variant
-            commonLabels = set(paletteElements) & set(svgTags)
-            # Create a dupe to modify
-            svgMod = copy.deepcopy(svg)
+        for variant in palette.variants:
+            palette_elements = palette.getVariantElementList(variant)
+            common_labels = set(palette_elements) & set(svg_tags)
+            modified_svg = copy.deepcopy(svg)
 
-            print(f"Found {len(commonLabels)} variation(s) to change in {variant.tag}:")
+            for label in list(common_labels):
+                palette_match = palette.get_by_label(variant, label)
+                for match in modified_svg.get_by_label(label):
+                    modified_svg.mod_elements(match, palette_match)
 
-            # Every shared label
-            for label in list(commonLabels):
-
-                svgLabel = svgMod.getByLabel(label)
-
-                print(f"   * Changing {len(svgLabel)} instance(s) of '{label}'")
-
-                paletteMatch = palette.getByLabel(variant, label)
-
-                for match in svgMod.getByLabel(label):
-
-                    svgMod.modStyleElements(match,paletteMatch)
-
-            svgMod.export(variant)
+            modified_svg.export(variant)
 
 
 if __name__ == "__main__":
@@ -63,19 +51,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Batch create SVG variants.")
 
     inGroupHeader = parser.add_argument_group(title='Input')
-    
     inGroup = inGroupHeader.add_mutually_exclusive_group(required=True)
+    inGroupHeader.add_argument('-x', action="store",
+                               dest="palette", help="Path to palette XML",
+                               required=True)
 
     inGroup.add_argument('-f', action="store",
-                        dest="inputfile",
-                        help="Path to single input SVG")
+                         dest="inputfile",
+                         help="Path to single input SVG")
     inGroup.add_argument('-i', action="store",
-                        dest="inputdir",
-                        help="Path to directory of SVGs")
-
-    inGroupHeader.add_argument('-x', action="store",
-                        dest="palette", help="Path to palette XML",
-                        required=True)
+                         dest="inputdir",
+                         help="Path to directory of SVGs")
 
     parser.add_argument('-o', action="store",
                         dest="output",

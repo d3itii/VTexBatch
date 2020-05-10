@@ -1,6 +1,6 @@
 # VTexBatch
 
-VTexBatch a command-line script for automation of creating SVG color variants. It was created for use in the Animal Crossing Retexture Project. It currently only supports SVG files created in [Inkscape](https://gitlab.com/inkscape/inkscape).
+VTexBatch a command-line script for automation of creating SVG variant creation. It currently only supports SVG files created in [Inkscape](https://gitlab.com/inkscape/inkscape).
 
 - [VTexBatch](#vtexbatch)
   - [Installation / Usage](#installation--usage)
@@ -11,7 +11,7 @@ VTexBatch a command-line script for automation of creating SVG color variants. I
 
 ## Installation / Usage
 
-VTexBatch requires Python 3.7 and requires no dependencies.
+VTexBatch runs on Python 3.7 and requires no dependencies.
 
 ```
 python3 vtexbatch.py -x [PATH TO PALETTE] [INPUT]
@@ -74,3 +74,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ## License / Credit
 
 VTexBatch is licensed under [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html). Created by @d3itii with many thanks to @makusu2.
+
+Originally created for use in the Animal Crossing Retexture Project.
