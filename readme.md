@@ -73,6 +73,6 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License / Credit
 
-VTexBatch is licensed under [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html). Created by @deity with many thanks to @makusu2.
+VTexBatch is licensed under [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html). Created by @heyitsdeity with many thanks to @makusu2.
 
 Originally created for use in the Animal Crossing Retexture Project.
